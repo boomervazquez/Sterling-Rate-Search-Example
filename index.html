@@ -346,6 +346,9 @@ function doSearch(){
 
   var zipAP=zm[0][0],zipZone=zm[0][1],zipCity=zm[0][2],zipSt=zm[0][3];
 
+  // If the zone exists but has no tariff rates (e.g. zone "X"), treat as not found
+  if(!TARIFFS[zipAP+"-"+zipZone]){rd.innerHTML='<div class="error-msg">Zip code <strong>'+lz+'</strong> ('+zipCity+', '+zipSt+') maps to <strong>'+zipAP+' Zone '+zipZone+'</strong>, but no cartage rates exist for this zone.</div>';ib.style.display="none";return;}
+
   // Determine linehaul direction based on mode
   // Delivery: airport(origin) -> zipAP(dest), cartage delivers to zip
   // Pickup: zipAP(origin) -> airport(dest), cartage picks up from zip
