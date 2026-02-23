@@ -385,7 +385,7 @@ function doSearch(){
   if(wtLbs>0){var wd=wtLbs.toFixed(1)+" lbs";if(currentUnit==="kg")wd=rawWt+" kg &rarr; "+wtLbs.toFixed(1)+" lbs";html+='<div class="zip-detail-item"><span class="label">Weight</span><span class="value">'+wd+'</span></div>';}
   html+='</div></div>';
 
-  if(!klnRate&&!cartRate){html+='<div class="error-msg">No rates found for this route.</div>';rd.innerHTML=html;return;}
+  if(!klnRate||!cartRate){var miss=!klnRate&&!cartRate?"terminal-to-terminal and cartage":(!klnRate?"terminal-to-terminal ("+lhOrigin+" &rarr; "+lhDest+")":"cartage ("+zipAP+" Zone "+zipZone+")");html+='<div class="error-msg">No rates available for this lane &mdash; missing '+miss+' rate data. Both terminal-to-terminal and cartage rates are required to display pricing.</div>';rd.innerHTML=html;return;}
 
   // FSC applies to per-lb RATES only, NOT minimums
   // Weight quote
@@ -436,8 +436,6 @@ function doSearch(){
   if(klnRate&&cartRate)mn+=" | Combined min: "+fmtMin(klnRate.min+cartRate.min);
   if(fscPct>0)mn+=" (FSC applied to per-lb rates only, not minimums)";
   html+='<div class="minimum-note">&#9432; '+mn+'</div></div></div>';
-
-  if(!klnRate)html+='<div class="no-cartage-note">&#9432; No terminal-to-terminal rate for <strong>'+lhOrigin+' &rarr; '+lhDest+'</strong>. Showing cartage only.</div>';
 
   // Detail tables
   if(klnRate){
